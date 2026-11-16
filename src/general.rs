@@ -1,248 +1,210 @@
 pub fn main() {
-   
-    println!("RUST program");
+    println!("=== FONDAMENTAUX DU LANGAGE RUST ===");
 
-    let x: i32 = 5; // non mutable
-    let mut y: i32 = 4 ;
-    let z: i32 = y * x ;
+    // 1. Variables et Mutabilite
+    let x: i32 = 5; // Immuable par defaut
+    let mut y: i32 = 4; // Mutable
+    let z: i32 = y * x;
     y = 10;
-    println!("{}", x);
-    println!("{}",y);
-    println!("{}", z);
+    println!("Valeur immuable x : {}", x);
+    println!("Valeur mutable y modifiee : {}", y);
+    println!("Produit initial z : {}", z);
 
-    let (j , k) = (15 , 30);
-    println!("{}", j);
-    println!("{}", k);
+    // Destructuration de tuple
+    let (j, k) = (15, 30);
+    println!("Tuple decompose : j = {}, k = {}", j, k);
 
+    // 2. Chaines de caracteres : &str (tranche de chaine) vs String (tas alloue dynamiquement)
+    let texte_statique: &'static str = "Chaine litterale constante en lecture seule";
+    println!("{}", texte_statique);
 
-// les chaines de caractères
+    let mut phrase_dynamique: String = String::from("Une chaine dynamique");
+    phrase_dynamique.push_str(" enrichie en cours d'execution");
+    println!("{}", phrase_dynamique);
 
-    let mut texte: &'static str = "les autres types" ; //Juste lire une chaîne constante
-    println!("{}", texte);
+    // 3. Types numeriques reels, booleens et caracteres
+    let pi: f64 = 3.141592;
+    let base_e: f64 = 2.71828;
+    println!("Flottants : pi = {}, e = {}", pi, base_e);
 
-    texte = "hello";
-    println!("{}", texte);
+    let actif: bool = true;
+    println!("Booleen : {}", actif);
 
-    let  mut phrase: String = String::from("une phrase mutable"); //Construire ou modifier dynamiquement une chaîne
-    phrase.push_str("Interressant");
-    phrase = "Phrase netoyé".to_string();
-    println!("{}", phrase);
-    
+    let caractere: char = 'z';
+    println!("Caractere Unicode (4 octets) : {}", caractere);
 
-// les réels
-
-    let pi: f64 = 3.141592 ;
-    let demi: f64 = 2.71;
-    println!("valeure de pi : {}",pi);
-    println!("valeure de demi : {}",demi);
-
-
-// les booleans
-    let vrai: bool = true ;
-    println!("{}", vrai);
-
-
-// les caractères char
-
-let zed: char = 'z' ;
-println!("la lettre zed {} : " ,zed);
-
-// les if/else
-y=5;
-if x > y {
-    println!(" y est superieur a x") ;
-}else if x == y {
-    println!("x et y sont égaux ");
-}
-else {
-    println!("x est superieur a y") ;
-}
-
-// match : equivalent de switch
-
-let y = 4 ;
-match y {
-    1 => println!("y en lettre : Un"),
-    2 => println!("y en lettre : Deux"),
-    3 => println!("y en lettre : Trois"),
-    _ => println!("Acheter le livre pour tous apprendre")
-}
-// les boucles 
-
-println!("Boucle while");
-let  mut n = -6 ;
-while n < 5 {
-    n +=1;
-    if n==0{
-        print!(".....");
-        continue;
+    // 4. Structures conditionnelles if / else if / else
+    let seuil = 5;
+    if x > seuil {
+        println!("x ({}) est superieur au seuil ({})", x, seuil);
+    } else if x == seuil {
+        println!("x ({}) est exactement egal au seuil ({})", x, seuil);
+    } else {
+        println!("x ({}) est inferieur au seuil ({})", x, seuil);
     }
-    print!("{}", n) ;
-}
 
-println!("");
-println!("Boucle loop");
-let mut n: i32 = 0 ;
-loop {
-    
-    print!(" {}", n);
-
-    if n == 9 {
-        break;
+    // 5. Filtrage par motif (Pattern Matching avec match)
+    let code_statut = 2;
+    match code_statut {
+        1 => println!("Statut : Initialisation"),
+        2 => println!("Statut : En cours de traitement"),
+        3 => println!("Statut : Termine avec succes"),
+        _ => println!("Statut inconnu ou non pris en charge"),
     }
-    n= n+1;
-    
+
+    // 6. Boucles : while, loop et for
+    println!("Boucle while :");
+    let mut compteur = -3;
+    while compteur < 3 {
+        compteur += 1;
+        if compteur == 0 {
+            print!("[point d'inflexion zero] ");
+            continue;
+        }
+        print!("{} ", compteur);
+    }
+    println!();
+
+    println!("Boucle loop avec break conditionnel :");
+    let mut pas: i32 = 0;
+    loop {
+        print!("{} ", pas);
+        if pas >= 5 {
+            break;
+        }
+        pas += 1;
+    }
+    println!();
+
+    println!("Boucle for sur un tableau et intervalle range :");
+    let tableau: [i32; 5] = [10, 20, 30, 40, 50];
+    for element in tableau.iter() {
+        print!("{} ", element);
+    }
+    println!();
+
+    for index in 0..=3 {
+        print!("#{} ", index);
+    }
+    println!();
+
+    // 7. Blocs d'expressions et fonctions
+    let total_bloc: i32 = {
+        let sous_total_a = 100;
+        let sous_total_b = 400;
+        sous_total_a + sous_total_b // Expression retournee sans point-virgule
+    };
+    println!("Resultat de l'evaluation de bloc : {}", total_bloc);
+
+    println!("Somme (10 + 20) : {}", somme(10, 20));
+    println!("Produit (10 * 20) : {}", produit(10, 20));
+
+    // 8. Structures de donnees (Structs) et methodes associees (impl)
+    let mut utilisateur = User {
+        nom: String::from("DEFALEOUNA"),
+        prenom: String::from("Maxime"),
+        age: 21,
+    };
+    utilisateur.age = 22;
+    println!("Utilisateur : {:?}", utilisateur);
+
+    let rectangle = Rectangle::square(10);
+    println!("Rectangle cree : {:?}", rectangle);
+    println!("Surface calculee : {}", rectangle.area());
+
+    // 9. Enumerations avec donnees et pattern matching
+    let pikachu = Pokemon {
+        nom: String::from("Pikachu"),
+        type_element: TypePokemon::Electrique,
+    };
+    println!("Pokemon declare : {:?}", pikachu);
+    pikachu.declencher_attaque();
+
+    // 10. Gestion robuste des valeurs nulles avec Option<T>
+    let division_valide = division_securisee(20, 2);
+    let division_par_zero = division_securisee(20, 0);
+
+    match division_valide {
+        Some(valeur) => println!("Division reussie : {}", valeur),
+        None => println!("Erreur : division impossible"),
+    }
+
+    if division_par_zero.is_none() {
+        println!("Gestion prevenue : division par zero neutralisee avec succes");
+    }
+
+    println!("Addition avec option Some : {}", additionner_option(5, 10, Some(3)));
+    println!("Addition avec option None : {}", additionner_option(5, 10, None));
 }
 
-println!("");
-println!("Boucle for parcourir un tableau");
-let numbers: [i32; 10] = [0,1,2,3,4,5,6,7,8,9];
-for number in numbers.iter()  {
-    print!(" {}", number);
+// Fonctions
+fn somme(a: i32, b: i32) -> i32 {
+    a + b
 }
 
-
-println!("");
-println!("Boucle for ");
-for n in 0..=9 { // ou 0..10
-    print!(" {}", n);
+fn produit(a: i32, b: i32) -> i32 {
+    a * b
 }
 
-
-// les fonctions en rust
-println!("");
-
-let block: i32 = {
-    let a: i32 = 100 ;
-    let b: i32 = 400;
-    a+b
-};
-println!("block = {}", block);
-fn somme (mut a : i32 , b : i32) -> i32{
-    a = a + 0; // car nous avons dit a est mutable
-    return a+b;
+fn division_securisee(numerateur: isize, denominateur: isize) -> Option<isize> {
+    if denominateur == 0 {
+        None
+    } else {
+        Some(numerateur / denominateur)
+    }
 }
 
-fn product (a : i32 , b : i32)-> i32{
-    a*b
+fn additionner_option(a: isize, b: isize, bonus: Option<isize>) -> isize {
+    a + b + bonus.unwrap_or(0)
 }
 
-println!("la somme de 10 + 20 est egale à : {} " , somme(10, 20));
-println!("la produit de 10 avec 20 est egale à : {} " , product(10, 20));
-
-// les struct en rust car c'est pas orineté objet
-
-let mut admin = User{
-    nom : String::from("ALI"),
-    prenom : String::from("Tchagnime"),
-    age : 21
-} ;
-admin.prenom = String::from("Grégoire");
-          // let admin2 = User{..admin}; // admin dans Admin2
-         // let admin = User{nom,prenom,age};  // possible aussi 
-
-println!("{:?}", admin);
-
-let carre = Rectange::square(10);
-println!("{:?}", carre);
-println!("{}", carre.area());
-
-// les enum en rusts
-
-let pikachu = Pokemon{ name: String::from("Pikachu") , kind : PokemonKind::Electric};
-println!("{:?}", pikachu);
-pikachu.attack();
-
-
-// Les options en Rust. permet de gerer l'incertude du type d'une variable
-let div = safe_division(20, 2);
-let div2 = safe_division(20, 0);
-
-println!("{:?}", div.unwrap());
-println!("{:?}", div2);
-// println!("{:?}", div2.unwrap_or(0));
-if div2.is_some(){
-    println!("Division ok !!");
-}
-
-if div2.is_none(){
-    println!("On divisise pas par 0");
-}
-
-println!("{}", add(1,2, Some(2)));
-println!("{}", add(1,2, None));
-
-
-}
-
-
+// Structures
 #[derive(Debug)]
-struct  User{
-    nom : String,
-    prenom : String ,
-    age : u8
+struct User {
+    nom: String,
+    prenom: String,
+    age: u8,
 }
 
 #[derive(Debug)]
-struct Rectange{ // avec les strucs on definit de nouveaux types
-    width : usize,
+struct Rectangle {
+    width: usize,
     height: usize,
 }
 
-impl Rectange {
-    fn square(width:usize)->Rectange{
-        Rectange { width: (width), height: (width) }
-    }
-
-    // methode besoin d'une instance
-    fn area(&self)->usize{
-        self.height * self.height
-    }
-}
-
-
-
-#[derive(Debug , PartialEq)]
-enum PokemonKind{
-    Fire,Water,Electric
-}
-#[derive(Debug)]
-struct Pokemon{
-    name:String,
-    kind: PokemonKind
-}
-
-impl Pokemon{
-    fn attack(&self){
-        // if self.kind == PokemonKind::Fire {
-        //     println!("Fire attaque");
-        // }else if self.kind == PokemonKind::Water {
-        //     println!("water attaque")
-        // }else if self.kind == PokemonKind::Electric {
-        //     println!("Electric attack")
-        // }
-
-        match  self.kind {
-            PokemonKind::Electric => println!("Electric attack"),
-            PokemonKind::Water => println!("water attaque"),
-            PokemonKind::Fire => println!("Fire attaque")         
+impl Rectangle {
+    fn square(taille: usize) -> Rectangle {
+        Rectangle {
+            width: taille,
+            height: taille,
         }
+    }
 
+    fn area(&self) -> usize {
+        self.width * self.height
     }
 }
 
-
-fn safe_division ( a:isize , b:isize) -> Option<isize>{
-    if b == 0 {
-        return  None ;
-    }
-    return  Some(a/b) ;
+// Enumerations
+#[derive(Debug, PartialEq)]
+enum TypePokemon {
+    Feu,
+    Eau,
+    Electrique,
 }
 
-fn add(a:isize , b:isize , c:Option<isize>)->isize{
-    // if c.is_none(){
-    //    return  a + b
-    // }
+#[derive(Debug)]
+struct Pokemon {
+    nom: String,
+    type_element: TypePokemon,
+}
 
-    a + b + c.unwrap_or(0)
+impl Pokemon {
+    fn declencher_attaque(&self) {
+        match self.type_element {
+            TypePokemon::Electrique => println!("{} lance une attaque electrique foudroyante !", self.nom),
+            TypePokemon::Eau => println!("{} declenche un puissant hydrocanon !", self.nom),
+            TypePokemon::Feu => println!("{} souffle une tempete de flammes !", self.nom),
+        }
+    }
 }

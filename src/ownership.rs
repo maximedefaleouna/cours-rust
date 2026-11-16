@@ -1,30 +1,31 @@
-pub fn main(){
-    println!("ownership");
+pub fn main() {
+    println!("=== CONCEPTS D'OWNERSHIP ET D'EMPRUNT EN RUST ===");
 
-    // let a = String::from("Hello") ;
-    // let b = a ;
+    // 1. Possession unique et deplacement de propriete (Move)
+    let nom = String::from("DEFALEOUNA");
+    let nom_copie = nom.clone(); // Duplication explicite sur le tas (heap)
+    println!("Chaine originale clonee : {}", nom_copie);
 
-    // println!("{}", a); erreur
+    // 2. Emprunt immuable (Borrowing &)
+    let longueur = calculer_longueur(&nom);
+    println!("Longueur de '{}' via reference immuable : {}", nom, longueur);
 
-    // let a = 1 ;
-    // {
-    //     let b =2 ;
-    // } // a et b sont pas du même scope
+    // 3. Emprunt mutable (&mut)
+    let mut langage = String::from("Rust");
+    ajouter_extension(&mut langage, " 2024 Edition");
+    println!("Chaine modifiee en place : {}", langage);
 
-    let mut a : String = String::from("DEFALEOUNA");
-    // let result = longeure(a); // le move de a se fait
-    // let b: &String = &a ; //on unprunt mais c'est non mutable
-    let b = &mut a ; // un emprunt mutable
-    b.push_str("SS");
-    let result = longeure(b); 
-    println!("{}", result);
-    println!("{}", a);
-    // println!("{}", b);
-
-
-  
+    // 4. Portee lexicale (Scope) et liberation automatique de la memoire (Drop)
+    {
+        let variable_locale = String::from("Variable temporaire en memoire");
+        println!("Dans le scope enfant : {}", variable_locale);
+    } // variable_locale sort du scope et sa memoire est liberee sans garbage collector
 }
 
-fn longeure( a : &String)->usize{
-    a.len()
+fn calculer_longueur(texte: &String) -> usize {
+    texte.len()
+}
+
+fn ajouter_extension(chaine: &mut String, extension: &str) {
+    chaine.push_str(extension);
 }

@@ -1,9 +1,7 @@
-mod ownership;
 mod general;
+mod ownership;
 
 fn main() {
-    ownership::main();
     general::main();
-    
-
+    ownership::main();
 }
